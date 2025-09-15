@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavHashLink } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 export const Header = () => {
@@ -14,8 +15,8 @@ export const Header = () => {
                 <NavHashLink to="/agendamento">Agendamento</NavHashLink>
             </nav>
             <div className="auth-buttons">
-                <button className="login-btn">Login</button>
-                <button className='register-btn'>Cadastrar</button>
+                <button className="btn btn-secondary">Login</button>
+                <Link to="/register" className="btn btn-primary">Cadastrar</Link>
             </div>
         </header>
     );
