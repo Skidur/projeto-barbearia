@@ -8,8 +8,9 @@ export const Header = () => {
             <div className="logo">BarberFlow</div>
             <nav className="navigation">
                 <NavHashLink to="/#" smooth>Início</NavHashLink>
-                <NavHashLink to="/#servicos" smooth>Serviços</NavHashLink>
                 <NavHashLink to="/#sobre" smooth>Sobre</NavHashLink>
+                <NavHashLink to="/#servicos" smooth>Serviços</NavHashLink>
+                <NavHashLink to="/#equipe" smooth>Equipe</NavHashLink>
                 <NavHashLink to="/agendamento">Agendamento</NavHashLink>
             </nav>
             <div className="auth-buttons">
