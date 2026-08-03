@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate:create": "node-pg-migrate create --migrations-dir=src/database/migrations",
+    "migrate:up": "node-pg-migrate up --migrations-dir=src/database/migrations --envPath=.env",
+    "migrate:down": "node-pg-migrate down --migrations-dir=src/database/migrations --envPath=.env"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,7 @@
     "pg": "^8.16.3"
   },
   "devDependencies": {
+    "node-pg-migrate": "^9.0.0",
     "nodemon": "^3.1.10"
   }
 }
