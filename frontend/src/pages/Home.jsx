@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
 import aboutImage from '../assets/historia.jpg';
 import haircutImage from '../assets/corte.jpg';
 import beardImage from '../assets/barba.jpg';
@@ -12,8 +12,8 @@ import barber3Image from '../assets/barbeiro3.jpg';
 import { ImageCarousel } from '../components/common/ImageCarousel';
 
 export const Home = () => {
-    const [isLoggedIn, _setIsLoggedIn] = useState(false);
-    
+    const { isAuthenticated } = useAuth();
+
     return (
         <>
             <section className='hero-section'>
@@ -21,7 +21,7 @@ export const Home = () => {
                     <div className='hero-text'>
                         <h2>A melhor experiência de barbearia da cidade</h2>
                         <p>Estilo, conforto e precisão. Agende seu horário com os melhores.</p>
-                        <button className='cta-button'>Agende seu Horário</button>
+                        <Link to={isAuthenticated ? "/booking" : "/login"} className='cta-button'>Agende seu Horário</Link>
                     </div>
                 </div>
             </section>
@@ -48,7 +48,7 @@ export const Home = () => {
                     <h3 className='section-title'>Nossos Serviços</h3>
                     <div className='services-grid'>
 
-                        <Link to={isLoggedIn ? "/booking" : "/login"} className="service-card">
+                        <Link to={isAuthenticated ? "/booking" : "/login"} className="service-card">
                             <img src={haircutImage} alt="Corte de Cabelo" className="service-card-image" />
                             <div className="service-card-content">
                                 <h4>Corte de Cabelo</h4>
@@ -57,7 +57,7 @@ export const Home = () => {
                             </div>
                         </Link>
 
-                        <Link to={isLoggedIn ? "/booking" : "/login"} className="service-card">
+                        <Link to={isAuthenticated ? "/booking" : "/login"} className="service-card">
                             <img src={beardImage} alt="Barba Terapia" className="service-card-image" />
                             <div className="service-card-content">
                                 <h4>Barba Terapia</h4>
@@ -66,7 +66,7 @@ export const Home = () => {
                             </div>
                         </Link>
 
-                        <Link to={isLoggedIn ? "/booking" : "/login"} className="service-card">
+                        <Link to={isAuthenticated ? "/booking" : "/login"} className="service-card">
                             <img src={comboImage} alt="Combo Cabelo e Barba" className="service-card-image" />
                             <div className="service-card-content">
                                 <h4>Combo (Cabelo + Barba)</h4>

@@ -1,0 +1,127 @@
+.booking-page {
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.booking-container {
+    width: 100%;
+    max-width: 700px;
+}
+
+.booking-container h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.booking-step {
+    margin-bottom: 2rem;
+}
+
+.booking-step h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary-color);
+}
+
+.booking-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.booking-option {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: var(--surface-color);
+    color: var(--text-primary-color);
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.booking-option span {
+    color: var(--text-secondary-color);
+    font-size: 0.85rem;
+}
+
+.booking-option:hover {
+    border-color: var(--primary-color);
+}
+
+.booking-option.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(187, 134, 252, 0.15);
+}
+
+.booking-slots .booking-option {
+    align-items: center;
+    padding: 0.6rem 1rem;
+}
+
+.booking-date-input {
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: var(--surface-color);
+    color: var(--text-primary-color);
+    font-size: 1rem;
+}
+
+.booking-summary {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.booking-summary .submit-btn {
+    margin-top: 1rem;
+    max-width: 300px;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.booking-summary .submit-btn:hover {
+    opacity: 0.9;
+}
+
+.booking-summary .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.booking-confirmation {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.booking-confirmation-services {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    color: var(--text-secondary-color);
+}
+
+.booking-login-prompt {
+    font-size: 1.1rem;
+}
+
+.form-error {
+    background-color: rgba(220, 53, 69, 0.15);
+    border: 1px solid #dc3545;
+    color: #ff8a97;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}

@@ -1,9 +1,18 @@
 import React from 'react';
 import { NavHashLink } from 'react-router-hash-link';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import './Header.css';
 
 export const Header = () => {
+    const { user, isAuthenticated, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
     return (
         <header className="header">
             <div className="logo">BarberFlow</div>
@@ -12,11 +21,20 @@ export const Header = () => {
                 <NavHashLink to="/#sobre" smooth>Sobre</NavHashLink>
                 <NavHashLink to="/#servicos" smooth>Serviços</NavHashLink>
                 <NavHashLink to="/#equipe" smooth>Equipe</NavHashLink>
-                <NavHashLink to="/agendamento">Agendamento</NavHashLink>
+                <Link to={isAuthenticated ? '/booking' : '/login'}>Agendamento</Link>
             </nav>
             <div className="auth-buttons">
-                <button className="btn btn-secondary">Login</button>
-                <Link to="/register" className="btn btn-primary">Cadastrar</Link>
+                {isAuthenticated ? (
+                    <>
+                        <span className="user-name">Olá, {user.name.split(' ')[0]}</span>
+                        <button type="button" className="btn btn-secondary" onClick={handleLogout}>Sair</button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className="btn btn-secondary">Login</Link>
+                        <Link to="/register" className="btn btn-primary">Cadastrar</Link>
+                    </>
+                )}
             </div>
         </header>
     );

@@ -5,17 +5,23 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "migrate:create": "node-pg-migrate create --migrations-dir=src/database/migrations",
     "migrate:up": "node-pg-migrate up --migrations-dir=src/database/migrations --envPath=.env",
-    "migrate:down": "node-pg-migrate down --migrations-dir=src/database/migrations --envPath=.env"
+    "migrate:down": "node-pg-migrate down --migrations-dir=src/database/migrations --envPath=.env",
+    "seed": "node src/database/seeders/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.16.3"
   },
   "devDependencies": {
