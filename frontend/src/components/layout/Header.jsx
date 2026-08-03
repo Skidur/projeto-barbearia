@@ -27,6 +27,7 @@ export const Header = () => {
                 {isAuthenticated ? (
                     <>
                         <span className="user-name">Olá, {user.name.split(' ')[0]}</span>
+                        <Link to="/minha-conta" className="btn btn-secondary">Minha Conta</Link>
                         <button type="button" className="btn btn-secondary" onClick={handleLogout}>Sair</button>
                     </>
                 ) : (

@@ -1,5 +1,7 @@
 const pool = require('../../config/database');
 
+const MIN_CANCELLATION_NOTICE_MINUTES = 120;
+
 function timeToMinutes(time) {
   const [hours, minutes] = time.split(':').map(Number);
   return hours * 60 + minutes;
@@ -122,5 +124,85 @@ module.exports = {
     } finally {
       client.release();
     }
+  },
+
+  async listMine(req, res) {
+    const clientResult = await pool.query('SELECT id FROM clients WHERE user_id = $1', [req.userId]);
+    if (clientResult.rows.length === 0) {
+      return res.json([]);
+    }
+    const clientId = clientResult.rows[0].id;
+
+    const { rows: appointments } = await pool.query(
+      `SELECT a.id, a.date, a.start_time, a.end_time, a.status, u.name AS barber_name
+       FROM appointments a
+       JOIN users u ON u.id = a.barber_id
+       WHERE a.client_id = $1
+       ORDER BY a.date DESC, a.start_time DESC`,
+      [clientId]
+    );
+
+    if (appointments.length === 0) {
+      return res.json([]);
+    }
+
+    const appointmentIds = appointments.map((a) => a.id);
+    const { rows: services } = await pool.query(
+      `SELECT aps.appointment_id, s.name, aps.price_at_booking
+       FROM appointment_services aps
+       JOIN services s ON s.id = aps.service_id
+       WHERE aps.appointment_id = ANY($1::int[])`,
+      [appointmentIds]
+    );
+
+    const servicesByAppointment = {};
+    for (const s of services) {
+      if (!servicesByAppointment[s.appointment_id]) servicesByAppointment[s.appointment_id] = [];
+      servicesByAppointment[s.appointment_id].push({ name: s.name, price: s.price_at_booking });
+    }
+
+    return res.json(
+      appointments.map((a) => ({
+        ...a,
+        services: servicesByAppointment[a.id] || [],
+      }))
+    );
+  },
+
+  async cancel(req, res) {
+    const { id } = req.params;
+
+    const { rows } = await pool.query(
+      `SELECT a.id, a.date, a.start_time, a.status, c.user_id AS client_user_id
+       FROM appointments a
+       JOIN clients c ON c.id = a.client_id
+       WHERE a.id = $1`,
+      [id]
+    );
+    const appointment = rows[0];
+
+    if (!appointment || Number(appointment.client_user_id) !== Number(req.userId)) {
+      return res.status(404).json({ error: 'Agendamento não encontrado.' });
+    }
+    if (appointment.status === 'cancelled') {
+      return res.status(409).json({ error: 'Esse agendamento já está cancelado.' });
+    }
+
+    const appointmentDate = appointment.date.toISOString().slice(0, 10);
+    const appointmentStart = new Date(`${appointmentDate}T${appointment.start_time}`);
+    const minutesUntil = (appointmentStart.getTime() - Date.now()) / 60000;
+
+    if (minutesUntil < MIN_CANCELLATION_NOTICE_MINUTES) {
+      return res.status(409).json({
+        error: `Cancelamentos precisam ser feitos com pelo menos ${MIN_CANCELLATION_NOTICE_MINUTES / 60} horas de antecedência.`,
+      });
+    }
+
+    await pool.query(
+      `UPDATE appointments SET status = 'cancelled', cancelled_at = now(), cancelled_by = $1 WHERE id = $2`,
+      [req.userId, id]
+    );
+
+    return res.status(204).send();
   },
 };
